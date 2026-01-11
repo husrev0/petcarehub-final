@@ -1,9 +1,13 @@
 import { Routes, Route } from 'react-router-dom'
 
+// Bunlar 'pages' klasöründeyse böyle kalsın:
 import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import MyBookings from './pages/MyBookings'
+
+// DİKKAT: Resimde MyBookings.jsx 'src' içinde görünüyor (App.jsx yaninda).
+// O yüzden başındaki 'pages/' kısmını sildik:
+import MyBookings from './MyBookings' 
 
 export default function App() {
   return (
