@@ -4,6 +4,11 @@ import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
 
+import CreateListing from './CreateListing';
+import Success from './Success';
+import Dashboard from './Dashboard';
+import MyBookings from './MyBookings';
+
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
