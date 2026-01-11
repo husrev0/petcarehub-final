@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
 
-// --- SAYFALAR (Hepsi ./ ile başlıyor, pages YOK) ---
+// --- SAYFALAR ---
 import LandingPage from './LandingPage';
 import Login from './Login';
 import Register from './Register';
@@ -11,7 +11,8 @@ import SitterDetails from './SitterDetails';
 import CreateListing from './CreateListing';
 import Success from './Success';
 import Dashboard from './Dashboard';
-import MyBookings from './MyBookings';
+// İSMİ DEĞİŞTİRDİM Kİ HATA VEREMESİN:
+import MyBookingsPage from './MyBookings'; 
 import SitterDashboard from './SitterDashboard';
 import MyPets from './MyPets';
 import ProfileSettings from './ProfileSettings';
@@ -31,7 +32,9 @@ function App() {
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/success" element={<Success />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/bookings" element={<MyBookings />} />
+          
+          {/* BURAYI DA DEĞİŞTİRDİM */}
+          <Route path="/bookings" element={<MyBookingsPage />} />
           
           <Route element={<PrivateRoute />}>
             <Route path="/sitter-dashboard" element={<SitterDashboard />} />
