@@ -1,17 +1,22 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout'; // Menüyü buradan çekiyoruz
 
-import LandingPage from './pages/LandingPage'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import MyBookings from './MyBookings'
+// Sayfalar (Hepsi src içinde olduğu için ./ kullanıyoruz)
+import LandingPage from './LandingPage';
+import Login from './Login';
+import Register from './Register';
+import MyBookings from './MyBookings';
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/bookings" element={<MyBookings />} />
+      {/* Tüm sayfaları Layout içine alıyoruz ki hepsinde Menü görünsün */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/bookings" element={<MyBookings />} />
+      </Route>
     </Routes>
-  )
+  );
 }
