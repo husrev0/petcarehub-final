@@ -1,5 +1,8 @@
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 
+// 1. MOTORU GERİ ÇAĞIRIYORUZ (BUNU UNUTMUŞTUK)
+import { AuthProvider } from './context/AuthContext';
+
 // PAGES
 import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
@@ -20,13 +23,10 @@ const Layout = () => {
       <nav className="bg-white shadow-sm border-b px-4 py-3 flex justify-between items-center sticky top-0 z-50">
         <Link to="/" className="text-xl font-bold text-indigo-600 flex items-center gap-2">🐾 PetCareHub</Link>
         
-        {/* ANA MENÜ LİNKLERİ */}
         <div className="hidden md:flex space-x-4 items-center text-sm">
           <Link to="/" className="text-gray-600 hover:text-indigo-600 font-medium">Ana Sayfa</Link>
           <Link to="/sitters" className="text-gray-600 hover:text-indigo-600 font-medium">Bakıcılar</Link>
           <Link to="/bookings" className="text-gray-600 hover:text-indigo-600 font-medium">Randevular</Link>
-          
-          {/* EKSTRA SAYFALAR (10 EKRAN İÇİN) */}
           <Link to="/pets" className="text-gray-600 hover:text-indigo-600 font-medium">Evcil Hayvanlarım</Link>
           <Link to="/sitter-dashboard" className="text-gray-600 hover:text-indigo-600 font-medium">Bakıcı Paneli</Link>
         </div>
@@ -47,22 +47,25 @@ const Layout = () => {
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/sitters" element={<Dashboard />} />
-        <Route path="/bookings" element={<MyBookings />} />
-        <Route path="/pets" element={<MyPets />} />
-        <Route path="/profile" element={<ProfileSettings />} />
-        <Route path="/sitter-dashboard" element={<SitterDashboard />} />
-        <Route path="/sitters/:id" element={<SitterDetails />} />
-        <Route path="/create-listing" element={<CreateListing />} />
-        <Route path="/bookings/:id/review" element={<LeaveReview />} />
-        <Route path="/success" element={<Success />} />
-      </Route>
-    </Routes>
+    // 2. TÜM SİTEYİ MOTORUN (AuthProvider) İÇİNE ALIYORUZ
+    <AuthProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/sitters" element={<Dashboard />} />
+          <Route path="/bookings" element={<MyBookings />} />
+          <Route path="/pets" element={<MyPets />} />
+          <Route path="/profile" element={<ProfileSettings />} />
+          <Route path="/sitter-dashboard" element={<SitterDashboard />} />
+          <Route path="/sitters/:id" element={<SitterDetails />} />
+          <Route path="/create-listing" element={<CreateListing />} />
+          <Route path="/bookings/:id/review" element={<LeaveReview />} />
+          <Route path="/success" element={<Success />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   )
 }
