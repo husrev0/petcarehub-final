@@ -35,6 +35,11 @@ function App() {
           <Route path="/sitters" element={<ExploreSitters />} />
           <Route path="/sitters/:id" element={<SitterDetails />} />
 
+          <Route path="/create-listing" element={<CreateListing />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/bookings" element={<MyBookings />} />
+
           {/* Private Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/sitters/:id/book" element={<BookingRequest />} />
