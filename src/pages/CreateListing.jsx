@@ -1,41 +1,24 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export default function CreateListing() {
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Demo olduğu için direkt başarı sayfasına yönlendiriyoruz
-    navigate('/success');
-  };
-
+export default function PlaceholderPage() {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Yeni İlan Oluştur</h1>
-      <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6 space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">İlan Başlığı</label>
-          <input required type="text" className="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Örn: Profesyonel Kedi Bakıcısı" />
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm text-center">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-indigo-600">
+          🚧 Yapım Aşamasında
+        </h2>
+        <p className="mt-4 text-gray-600">
+          Bu özellik MVP kapsamında yakında eklenecek.
+        </p>
+        <div className="mt-10">
+          <Link 
+            to="/dashboard" 
+            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+          >
+            Ana Sayfaya Dön
+          </Link>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Açıklama</label>
-          <textarea required rows={4} className="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Hizmet detaylarınızı anlatın..." />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Gecelik Fiyat ($)</label>
-            <input required type="number" className="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="50" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Konum</label>
-            <input required type="text" className="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="İstanbul" />
-          </div>
-        </div>
-        <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700">
-          İlanı Yayınla
-        </button>
-      </form>
+      </div>
     </div>
   );
 }
