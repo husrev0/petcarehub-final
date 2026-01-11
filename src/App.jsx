@@ -1,50 +1,47 @@
 import { Routes, Route } from 'react-router-dom';
-// Eğer components klasörün varsa bunları aç, yoksa yorumda kalsın
-// import Layout from './components/Layout';
-// import PrivateRoute from './components/PrivateRoute';
-// import { AuthProvider } from './context/AuthContext';
+// import Layout from './components/Layout'; // Varsa aç
+// import PrivateRoute from './components/PrivateRoute'; // Varsa aç
+import { AuthProvider } from './context/AuthContext'; // Varsa kalsın
 
-// --- TÜM DOSYALAR ANA DİZİNDE (Resmine göre) ---
-// Hepsini './' ile çağırıyoruz. pages klasörüne gitmiyoruz.
-import LandingPage from './LandingPage';
+// --- SAYFALAR (Burada sadece TEK SEFER tanımlıyoruz) ---
+// Eğer pages klasörün varsa yoluna '/pages/' ekle, yoksa './' kalsın.
+// Ama sakın aşağıda tekrar import etme!
+
+import LandingPage from './LandingPage'; 
 import Login from './Login';
 import Register from './Register';
 import SitterDetails from './SitterDetails';
 import CreateListing from './CreateListing';
 import Success from './Success';
 import Dashboard from './Dashboard';
-import MyBookings from './MyBookings'; // TEK SEFER ÇAĞIRDIK
+import MyBookings from './MyBookings'; // <--- İŞTE BU! Sadece burada kalsın.
 import SitterDashboard from './SitterDashboard';
 import MyPets from './MyPets';
 import ProfileSettings from './ProfileSettings';
 import LeaveReview from './LeaveReview';
 
-// Olmayan veya hata veren dosyaları sildim.
-
 function App() {
   return (
-    // <AuthProvider>  <-- AuthProvider dosyan varsa bu yorumu kaldır
+    // <AuthProvider> 
       <Routes>
-        {/* <Route element={<Layout />}> <-- Layout dosyan varsa bu yorumu kaldır */}
+        {/* <Route element={<Layout />}> */}
           
-          {/* --- AÇIK SAYFALAR --- */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/sitters/:id" element={<SitterDetails />} />
 
-          {/* Yeni Sayfalar */}
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/success" element={<Success />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/bookings" element={<MyBookings />} />
           
-          {/* --- GİZLİ SAYFALAR (Normalde PrivateRoute içinde olur) --- */}
-          {/* Şimdilik hoca görsün diye dışarı aldım, hata vermesin */}
+          {/* <Route element={<PrivateRoute />}> */}
             <Route path="/sitter-dashboard" element={<SitterDashboard />} />
             <Route path="/pets" element={<MyPets />} />
             <Route path="/profile" element={<ProfileSettings />} />
             <Route path="/bookings/:id/review" element={<LeaveReview />} />
+          {/* </Route> */}
 
         {/* </Route> */}
       </Routes>
