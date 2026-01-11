@@ -1,76 +1,84 @@
-
-import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
-import { Calendar } from 'lucide-react';
-
 export default function MyBookings() {
-    const { user } = useAuth();
-    const [bookings, setBookings] = useState([]);
-    const [loading, setLoading] = useState(true);
+  
+  // SAHTE RANDEVU VERİLERİ
+  const bookings = [
+    {
+      id: 101,
+      sitterName: "Ayşe Y.",
+      petName: "Pamuk",
+      date: "12 Ocak 2026",
+      status: "Onaylandı",
+      statusColor: "text-green-700 bg-green-50",
+      price: "1500₺"
+    },
+    {
+      id: 102,
+      sitterName: "Mehmet K.",
+      petName: "Karabaş",
+      date: "20 Ocak 2026",
+      status: "Bekliyor",
+      statusColor: "text-yellow-700 bg-yellow-50",
+      price: "750₺"
+    },
+    {
+      id: 103,
+      sitterName: "Zeynep B.",
+      petName: "Boncuk",
+      date: "05 Ocak 2026",
+      status: "Tamamlandı",
+      statusColor: "text-gray-700 bg-gray-50",
+      price: "450₺"
+    }
+  ];
 
-    useEffect(() => {
-        async function fetchBookings() {
-            if (!user) return;
-
-            const { data, error } = await supabase
-                .from('bookings')
-                .select(`
-          *,
-          sitter:profiles!sitter_id(full_name)
-        `)
-                .eq('owner_id', user.id)
-                .order('start_date', { ascending: true });
-
-            if (error) {
-                console.error('Error fetching bookings:', error);
-            } else {
-                setBookings(data || []);
-            }
-            setLoading(false);
-        }
-
-        fetchBookings();
-    }, [user]);
-
-    if (loading) return <div className="p-4">Loading bookings...</div>;
-
-    return (
-        <div className="space-y-6">
-            <h1 className="text-2xl font-semibold text-gray-900">My Bookings</h1>
-
-            {bookings.length === 0 ? (
-                <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <Calendar className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">No bookings yet</h3>
-                </div>
-            ) : (
-                <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                        {bookings.map((booking) => (
-                            <li key={booking.id} className="px-4 py-4 sm:px-6">
-                                <div className="flex items-center justify-between">
-                                    <div className="text-sm font-medium text-indigo-600 truncate">
-                                        Sitter: {booking.sitter?.full_name || booking.sitter_id}
-                                    </div>
-                                    <div className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                                            booking.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
-                                        }`}>
-                                        {booking.status}
-                                    </div>
-                                </div>
-                                <div className="mt-2 sm:flex sm:justify-between">
-                                    <div className="sm:flex">
-                                        <p className="flex items-center text-sm text-gray-500">
-                                            {booking.start_date} - {booking.end_date}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+  return (
+    <div className="bg-white px-4 py-10 sm:px-6 lg:px-8">
+      <div className="sm:flex sm:items-center">
+        <div className="sm:flex-auto">
+          <h1 className="text-2xl font-semibold leading-6 text-gray-900">Randevularım</h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Yaklaşan ve geçmiş tüm bakım hizmetlerinizi buradan takip edebilirsiniz.
+          </p>
         </div>
-    );
+      </div>
+      
+      {/* TABLO YAPISI */}
+      <div className="mt-8 flow-root">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Bakıcı</th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Evcil Hayvan</th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tarih</th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Durum</th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Ücret</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 bg-white">
+                  {bookings.map((booking) => (
+                    <tr key={booking.id}>
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        {booking.sitterName}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.petName}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.date}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm">
+                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${booking.statusColor}`}>
+                          {booking.status}
+                        </span>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.price}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
