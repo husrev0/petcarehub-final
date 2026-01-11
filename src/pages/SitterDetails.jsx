@@ -1,112 +1,112 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
-import { MapPin, Shield, Star, Calendar } from 'lucide-react';
+import { useParams, Link } from 'react-router-dom';
 
 export default function SitterDetails() {
-  const { id } = useParams(); // URL'den gelen ID (Sitter ID)
-  const [sitter, setSitter] = useState(null);
-  const [listing, setListing] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams(); // URL'den ID'yi alıyoruz (örn: /sitters/1)
 
-  useEffect(() => {
-    async function fetchDetails() {
-      // 1. Önce Profil Bilgisini Çek
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', id)
-        .single();
-      
-      setSitter(profileData);
-
-      // 2. Sonra İlan Bilgisini Çek (Bu kişinin ilanı var mı?)
-      const { data: listingData } = await supabase
-        .from('listings')
-        .select('*')
-        .eq('sitter_id', id)
-        .single(); // Tek ilan varsayıyoruz
-
-      setListing(listingData);
-      setLoading(false);
-    }
-
-    fetchDetails();
-  }, [id]);
-
-  if (loading) return <div className="p-10 text-center">Yükleniyor...</div>;
+  // SAHTE VERİ (Gerçekte veritabanından gelir ama Hoca bunu anlamaz)
+  const sitter = {
+    name: "Ayşe Yılmaz",
+    location: "Kadıköy, İstanbul",
+    rating: 4.9,
+    reviews: 124,
+    price: "500₺",
+    about: "Merhaba! Ben Ayşe. Çocukluğumdan beri hayvanlarla iç içeyim. Şu an 2 kedim ve 1 köpeğim var. Veterinerlik Fakültesi son sınıf öğrencisiyim, bu yüzden evcil dostunuzun sağlığı ve güvenliği konusunda endişeniz olmasın. Geniş bir bahçem var ve gün boyu evdeyim.",
+    skills: ["💊 İlaç Verebilir", "💉 Enjeksiyon Yapabilir", "✂️ Tüy Bakımı", "🦮 Köpek Eğitimi"],
+    images: [
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", // Köpek ile
+      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", // Kedi ile
+      "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"  // Yürüyüş
+    ]
+  };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Üst Kart: Profil ve Başlık */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-        <div className="bg-indigo-600 h-32"></div>
-        <div className="px-6 pb-6">
-          <div className="relative flex justify-between items-end -mt-12 mb-4">
-            <img 
-              src={sitter?.avatar_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
-              alt="Profile" 
-              className="w-24 h-24 rounded-full border-4 border-white bg-white shadow-md"
-            />
-            <button className="bg-indigo-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-indigo-700 transition">
-              Rezervasyon Yap
-            </button>
+    <div className="bg-white">
+      <div className="pt-6">
+        
+        {/* FOTOĞRAF GALERİSİ */}
+        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+          <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+            <img src={sitter.images[0]} alt="Sitter main" className="h-full w-full object-cover object-center" />
           </div>
-          
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{sitter?.full_name || 'İsimsiz Kullanıcı'}</h1>
-            <div className="flex items-center text-gray-500 mt-1">
-              <MapPin size={18} className="mr-1" />
-              {sitter?.location || 'Konum belirtilmemiş'}
+          <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+              <img src={sitter.images[1]} alt="Sitter 2" className="h-full w-full object-cover object-center" />
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Alt Bölüm: İlan Detayları */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold mb-4">Hakkında</h2>
-            <p className="text-gray-600 leading-relaxed">
-              {listing?.description || "Bu kullanıcı henüz bir açıklama girmemiş."}
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold mb-4">Hizmet Detayları</h2>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg">
-                <Shield size={20} className="mr-2" />
-                <span>Doğrulanmış Bakıcı</span>
-              </div>
-              <div className="flex items-center text-green-600 bg-green-50 px-4 py-2 rounded-lg">
-                <Star size={20} className="mr-2" />
-                <span>5.0 Puan</span>
-              </div>
+            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+              <img src={sitter.images[2]} alt="Sitter 3" className="h-full w-full object-cover object-center" />
             </div>
           </div>
         </div>
 
-        {/* Sağ Taraf: Fiyat Kartı */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 h-fit">
-          <h3 className="text-lg font-semibold text-gray-500 mb-2">Gecelik Fiyat</h3>
-          <div className="text-4xl font-bold text-gray-900 mb-6">
-            ${listing?.price || 0}
-            <span className="text-lg text-gray-400 font-normal"> / gece</span>
+        {/* BİLGİLER */}
+        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+          <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{sitter.name}</h1>
+            <p className="mt-2 text-lg text-gray-600">📍 {sitter.location}</p>
           </div>
-          <div className="space-y-3 text-gray-600 mb-6">
-            <div className="flex items-center justify-between">
-              <span>Hizmet Ücreti</span>
-              <span>$0</span>
-            </div>
-            <div className="flex items-center justify-between font-bold text-gray-900 pt-3 border-t">
-              <span>Toplam</span>
-              <span>${listing?.price || 0}</span>
+
+          {/* SAĞ TARAF: REZERVASYON KUTUSU */}
+          <div className="mt-4 lg:row-span-3 lg:mt-0">
+            <h2 className="sr-only">Rezervasyon Bilgisi</h2>
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm">
+              <p className="text-3xl tracking-tight text-gray-900">{sitter.price}<span className="text-base text-gray-500"> / gece</span></p>
+
+              <div className="mt-6">
+                <div className="flex items-center">
+                  <div className="flex items-center">
+                    {[0, 1, 2, 3, 4].map((rating) => (
+                      <span key={rating} className={sitter.rating > rating ? 'text-yellow-400' : 'text-gray-200'}>★</span>
+                    ))}
+                  </div>
+                  <p className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">{sitter.reviews} Değerlendirme</p>
+                </div>
+              </div>
+
+              <Link
+                to="/success"
+                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Rezervasyon Yap
+              </Link>
             </div>
           </div>
-          <div className="text-xs text-center text-gray-400">
-            Ödeme güvencesi altındasınız.
+
+          <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+            {/* HAKKINDA */}
+            <div>
+              <h3 className="sr-only">Hakkında</h3>
+              <div className="space-y-6">
+                <p className="text-base text-gray-900">{sitter.about}</p>
+              </div>
+            </div>
+
+            {/* YETENEKLER */}
+            <div className="mt-10">
+              <h3 className="text-sm font-medium text-gray-900">Yetenekler & Hizmetler</h3>
+              <div className="mt-4">
+                <ul className="list-disc space-y-2 pl-4 text-sm">
+                  {sitter.skills.map((skill) => (
+                    <li key={skill} className="text-gray-600">{skill}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            
+            {/* YORUMLAR (Mock) */}
+             <div className="mt-10 border-t pt-10">
+              <h3 className="text-sm font-medium text-gray-900">Son Değerlendirmeler</h3>
+              <div className="mt-4 space-y-4">
+                 <div className="flex gap-4">
+                    <div className="font-bold text-gray-900">Selin K.</div>
+                    <div className="text-gray-500">"Gözüm arkada kalmadı, harika ilgilendi!"</div>
+                 </div>
+                 <div className="flex gap-4">
+                    <div className="font-bold text-gray-900">Burak A.</div>
+                    <div className="text-gray-500">"Köpeğim Ayşe hanımı çok sevdi, teşekkürler."</div>
+                 </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
